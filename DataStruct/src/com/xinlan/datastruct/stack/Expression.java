@@ -35,6 +35,23 @@ public class Expression
     }
 
     /**
+     * 计算
+     * 
+     * @return
+     */
+    public String calculate()
+    {
+        toPostfix();
+        return calculateWithPostfix() + "";
+    }
+
+    public static String calculate(String expression)
+    {
+        Expression exp = new Expression(expression);
+        return exp.calculate();
+    }
+
+    /**
      * 中缀表达式改写为后缀表达式 逆波兰式
      * 
      * @return
@@ -43,12 +60,12 @@ public class Expression
     {
         storeMidfix = splitExpress();
 
-        System.out.println("-------表达式-----");
-        for (int i = 0; i < storeMidfix.size(); i++)
-        {
-            System.out.print(storeMidfix.get(i).toString() + " ");
-        }// end for i
-        System.out.println();
+        // System.out.println("-------表达式-----");
+        // for (int i = 0; i < storeMidfix.size(); i++)
+        // {
+        // System.out.print(storeMidfix.get(i).toString() + " ");
+        // }// end for i
+        // System.out.println();
 
         postfix = new ArrayList<Object>();
         // postfix.addAll(storeMidfix);
@@ -56,6 +73,7 @@ public class Expression
         for (int i = 0, size = storeMidfix.size(); i < size; i++)
         {
             Object element = storeMidfix.get(i);
+            // System.out.println("--->" + element);
             if (element instanceof String)
             {
                 postfix.add(element);
@@ -78,10 +96,10 @@ public class Expression
                                 postfix.add(addOutput);// 加入输出列表
                             }
                         }// end while
-                        
-                        if((Character) workStack.peek() == '(')
+
+                        if ((Character) workStack.peek() == '(')
                         {
-                            workStack.pop();//移除栈中的'('字符
+                            workStack.pop();// 移除栈中的'('字符
                         }
                         break;
                     default:
@@ -112,24 +130,81 @@ public class Expression
             // System.out.print(postfix.get(i).toString() + " ");
             sb.append(postfix.get(i).toString() + "  ");
         }// end for i
-        System.out.println("-------后缀表达式-----");
-        System.out.println(sb.toString());
+         // System.out.println("-------后缀表达式-----");
+        // System.out.println(sb.toString());
 
         return sb.toString();
     }
-    
-    
+
+    public float calculateWithPostfix()
+    {
+        if (postfix == null)
+        {
+            return 0;
+        }
+        Stack<Object> stack = new Stack<Object>();
+        for (int i = 0, size = postfix.size(); i < size; i++)
+        {
+            Object obj = postfix.get(i);
+            // System.out.println(obj);
+            if (obj instanceof Character)
+            {
+                Character oper = (Character) obj;
+                String num2 = (String) stack.pop();
+                String num1 = (String) stack.pop();
+
+                String result = calculateWithTwo(num1, num2, oper) + "";
+                stack.push(result);
+            }
+            else if (obj instanceof String)
+            {
+                stack.push(obj);
+            }
+        }// end for i
+
+        // System.out.println(stack.pop());
+        String ret = (String) stack.pop();
+        return Float.parseFloat(ret);
+    }
+
+    public float calculateWithTwo(String num1, String num2, char oper)
+    {
+        float op1 = Float.parseFloat(num1);
+        float op2 = Float.parseFloat(num2);
+        return calculateWithTwo(op1, op2, oper);
+    }
+
+    public float calculateWithTwo(float num1, float num2, char oper)
+    {
+        float result = 0f;
+        switch (oper)
+        {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                result = num1 / num2;
+                break;
+        }// end switch
+        return result;
+    }
 
     private List<Object> splitExpress()
     {
         List<Object> retList = new ArrayList<Object>();
-        final char[] dataChars = data.replaceAll(" ", "").trim().toCharArray();
+        String filterString = data.replaceAll(" ", "").trim();
+        final char[] dataChars = filterString.toCharArray();
 
         String temp = "";
         for (int i = 0, length = dataChars.length; i < length; i++)
         {
             char oneChar = dataChars[i];
-
             switch (oneChar)
             {
                 case '+':
@@ -138,7 +213,10 @@ public class Expression
                 case '/':
                 case '(':
                 case ')':
-                    retList.add(temp);
+                    if (!"".equals(temp.trim()))
+                    {
+                        retList.add(temp);
+                    }
                     temp = "";
                     retList.add(oneChar);
                     break;
