@@ -212,7 +212,7 @@ public class Expression
                 case '*':
                 case '/':
                 case '(':
-                case ')':
+                case ')': 
                     if (!"".equals(temp.trim()))
                     {
                         retList.add(temp);
