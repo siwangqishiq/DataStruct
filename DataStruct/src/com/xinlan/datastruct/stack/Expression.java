@@ -131,7 +131,7 @@ public class Expression
             sb.append(postfix.get(i).toString() + "  ");
         }// end for i
          // System.out.println("-------后缀表达式-----");
-        // System.out.println(sb.toString());
+         // System.out.println(sb.toString());
 
         return sb.toString();
     }
@@ -212,7 +212,7 @@ public class Expression
                 case '*':
                 case '/':
                 case '(':
-                case ')': 
+                case ')':
                     if (!"".equals(temp.trim()))
                     {
                         retList.add(temp);
