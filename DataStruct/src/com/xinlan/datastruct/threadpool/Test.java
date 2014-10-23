@@ -1,6 +1,7 @@
 package com.xinlan.datastruct.threadpool;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +11,7 @@ public class Test
 
     public static void main(String[] args)
     {
-        ExecutorService pool = createStackThreadPool(2);
+        ExecutorService pool = createQueueThreadPool(2);
         
         pool.execute(new MyTask("1"));
         pool.execute(new MyTask("2"));
@@ -24,6 +25,11 @@ public class Test
     public static ExecutorService createStackThreadPool(int threadSize){
         return new ThreadPoolExecutor(threadSize, threadSize, 0L,
                 TimeUnit.MILLISECONDS, new LIFOLinkedBlockingDeque<Runnable>());
+    }
+    
+    public static ExecutorService createQueueThreadPool(int threadSize){
+        return new ThreadPoolExecutor(threadSize, threadSize, 0L,
+                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     }
 
     static final class MyTask implements Runnable

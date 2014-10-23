@@ -32,7 +32,7 @@ public class FileDemo
         // }
         // // System.out.println(filename);
         // }// end for i
-        String ret = urls("https://github.com/siwangqishiq/Heap/blob/master/Heap/img/", files);
+        String ret = urls("http://10.24.64.60:8080/img/mei/", files);
         System.out.println(ret);
     }
 
