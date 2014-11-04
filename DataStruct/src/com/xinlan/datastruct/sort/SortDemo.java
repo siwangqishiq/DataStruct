@@ -27,7 +27,6 @@ public class SortDemo
                     break;
                 }
             }//end for j
-            System.out.println("insert point-->"+j);
             for(int index=i-1;index>=j;index--){
                 data[index+1]=data[index];
             }//end for index
