@@ -21,7 +21,6 @@ public class ShellSortDemo
     {
         for (int gap = data.length / 2; gap >= 1; gap = gap / 2)
         {
-            
             int len = data.length / gap;
             for (int p = 1; p < len; p++)
             {
